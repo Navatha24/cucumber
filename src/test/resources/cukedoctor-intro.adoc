@@ -1,0 +1,19 @@
+
+= *Introduction*
+
+System Under Test (SUT) - Thomas Bayer Sample application 
+
+The Thomas Bayer is a very simple sample application that represents the SUT for this Cucumber-Citrus test framework. This application provides REST API for accessing below resources using HTTP GET verb.
+
+* CUSTOMERList
+* INVOICEList
+* ITEMList
+* PRODUCTList
+
+
+[width="60%",frame="topbot",options="header,footer"]
+|===================================================================================
+|base URL |HTTP verb|URI path|Description|
+|http://www.thomas-bayer.com/sqlrest/|GET|CUSTOMER/|Retreives list of all customers|
+|http://www.thomas-bayer.com/sqlrest/|GET|PRODUCT/|Retreives list of all products|
+|===================================================================================
