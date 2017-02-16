@@ -1,7 +1,4 @@
-
 # Cucumber - Citrus Test Framework ![Logo][2] ![Logo][1] #
-
-
 
 ## System Under Test (SUT) - Thomas Bayer Sample application ##
 
