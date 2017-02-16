@@ -25,12 +25,12 @@ public class CustomerSteps {
 
 	private String URIPath;
 	private String customerId;
-	private String customersId;
+	private int Id;
 	private static Logger log = Logger.getLogger(CustomerSteps.class);
 
-	@Given("^I have Thomas-Bayer customers baseurl and uripath \"([^\"]*)\" , \"([^\"]*)\"$")
-	public void iHaveThomasBayerCustomersBaseurlAndUripath(String url, String uripath) throws Throwable {
-		URIPath=uripath;
+	@Given("^I have Thomas-Bayer customers url \"([^\"]*)\"$")
+	public void iHaveThomasBayerCustomersUrl(String url) throws Throwable {
+	   log.info("url:" +url);
 	}
 
 	@When("^I send a GET request to the service with above url$")
@@ -50,7 +50,12 @@ public class CustomerSteps {
 		.receive()
 		.response(HttpStatus.OK)
 		.contentType("application/xml")
-		.validateScript("assert root.children().size() > 4");
+		.validateScript("assert root.children().size() > 45");
+	}
+	
+	@Given("^a Thomas-Bayer customer with ID \"([^\"]*)\"$")
+	public void aThomasBayerCustomerWithID(String id) throws Throwable {
+		customerId = id;
 	}
 
 	@When("^I request details about the customer with above id$")
@@ -59,18 +64,15 @@ public class CustomerSteps {
 		.http()
 		.client(thomasBayerCustomers)
 		.send()
-		.get("/" + customerId);
+		.get(customerId +"/");
 	}
 
 	@Then("^I can get customers \"([^\"]*)\"\"([^\"]*)\"\"([^\"]*)\"\"([^\"]*)\"\"([^\"]*)\"$")
 	public void iCanGetCustomers(String id, String firstname, String lastname, String street, String city)
 			throws Throwable {
-		designer.variable("id", id);
-		designer.createVariable("firstname", firstname);
-		designer.createVariable("lastname", lastname);
-		designer.createVariable("street", street);
-		designer.createVariable("city", city);
-
+		
+		customerVariables(id, firstname, lastname, street, city);
+		
 		designer
 		.http()
 		.client(thomasBayerCustomers)
@@ -78,17 +80,13 @@ public class CustomerSteps {
 		.response(HttpStatus.OK)
 		.contentType("application/xml")
 		.payload(new ClassPathResource("responses/response2.xml"));
-
+		
 	}
-
-	@Given("^a Thomas-Bayer customer with ID \"([^\"]*)\"$")
-	public void aThomasBayerCustomerWithID(String id) throws Throwable {
-		customerId = id;
-	}
+	
 
 	@Given("^Thomas-Bayer customer with ID '(\\d+)'$")
 	public void thomasBayerCustomerWithID(int id) throws Throwable {
-		customersId = id + "";
+		Id = id;
 	}
 
 	@When("^I request details about the customer with above id in XML format$")
@@ -96,13 +94,22 @@ public class CustomerSteps {
 		designer.
 		http().
 		client(thomasBayerCustomers).
-		send().get("/" + customersId);
+		send().get(""+Id);
 	}
-
+	
 	@Then("^I should receive:$")
 	public void iShouldReceive(String xml) throws Throwable {
 		designer.http().client(thomasBayerCustomers).receive().response(HttpStatus.OK).contentType("application/xml")
 				.payload(xml);
+	}
+	
+
+	private void customerVariables(String id, String firstname, String lastname, String street, String city) {
+		designer.variable("id", id);
+		designer.createVariable("firstname", firstname);
+		designer.createVariable("lastname", lastname);
+		designer.createVariable("street", street);
+		designer.createVariable("city", city);
 	}
 
 }

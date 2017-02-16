@@ -17,6 +17,8 @@
   </citrus:global-variables>
 
   <citrus-http:client id="thomasBayerCustomers"
-                      request-url="http://www.thomas-bayer.com/sqlrest/"/>
+                      request-url="http://www.thomas-bayer.com/sqlrest/CUSTOMER/"/>
+   <citrus-http:client id="thomasBayerProducts"
+                      request-url="http://www.thomas-bayer.com/sqlrest/PRODUCT/"/>
 
 </beans>

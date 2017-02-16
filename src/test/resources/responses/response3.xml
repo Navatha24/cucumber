@@ -1,0 +1,5 @@
+<PRODUCT xmlns:xlink="http://www.w3.org/1999/xlink">
+<ID>${id}</ID>
+<NAME>${name}</NAME>
+<PRICE>${price}</PRICE>
+</PRODUCT>

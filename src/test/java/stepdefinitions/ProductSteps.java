@@ -1,6 +1,8 @@
 package stepdefinitions;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.consol.citrus.annotations.CitrusResource;
@@ -20,21 +22,43 @@ public class ProductSteps {
 	private TestDesigner designer;
 
 	@Autowired
-	private HttpClient thomasBayerCustomers;
+	private HttpClient thomasBayerProducts;
+	
+	private String productID;
 	
 	@Given("^a Thomas-Bayer product with ID \"([^\"]*)\"$")
-	public void aThomasBayerProductWithID(String arg1) throws Throwable {
-	    
+	public void aThomasBayerProductWithID(String ID) throws Throwable {
+	    productID=ID;
 	}
 
 	@When("^I request details about the product with above id$")
 	public void iRequestDetailsAboutTheProductWithAboveId() throws Throwable {
-	   
+		designer
+		.http()
+		.client(thomasBayerProducts)
+		.send()
+		.get(productID);
 	}
 
 	@Then("^I can get product \"([^\"]*)\"\"([^\"]*)\"\"([^\"]*)\"$")
-	public void iCanGetProduct(String arg1, String arg2, String arg3) throws Throwable {
+	public void iCanGetProduct(String ID, String NAME, String PRICE) throws Throwable {
+		
+		productVariables(ID, NAME, PRICE);
+		
+		designer
+		.http()
+		.client(thomasBayerProducts)
+		.receive()
+		.response(HttpStatus.OK)
+		.contentType("application/xml")
+		.payload(new ClassPathResource("responses/response3.xml"));
 	  
+	}
+
+	private void productVariables(String ID, String NAME, String PRICE) {
+		designer.variable("id", ID);
+		designer.createVariable("name", NAME);
+		designer.createVariable("price", PRICE);
 	}
 
 }

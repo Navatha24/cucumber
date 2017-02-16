@@ -5,7 +5,7 @@ I want to get all details of my customers
 so that I can provide updated information about my company services to all my customers
 
 Scenario: Retrieve list of all Thomas-Bayer Customers 
-	Given I have Thomas-Bayer customers baseurl and uripath "http://www.thomas-bayer.com/sqlrest" , "/CUSTOMER/"
+	Given I have Thomas-Bayer customers url "http://www.thomas-bayer.com/sqlrest/CUSTOMER"
 	When I send a GET request to the service with above url 
 	Then I can retrieve list of all Thomas-Bayer customers 
 	
@@ -22,7 +22,7 @@ Scenario Outline: Find customer details by customer id
 		|ID|FIRSTNAME|LASTNAME|STREET|CITY|
 		|0|Laura|Steel|429 Seventh Av.|Dallas|
 		|1|Susanne|King|366 - 20th Ave.|Olten|
-	
+				
 Scenario: Should return customer details in XML format 
 	Given Thomas-Bayer customer with ID '0' 
 	When I request details about the customer with above id in XML format 
