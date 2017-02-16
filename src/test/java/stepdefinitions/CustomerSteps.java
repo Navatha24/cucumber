@@ -23,31 +23,43 @@ public class CustomerSteps {
 	@Autowired
 	private HttpClient thomasBayerCustomers;
 
-	private String URL;
+	private String URIPath;
 	private String customerId;
-
 	private String customersId;
 	private static Logger log = Logger.getLogger(CustomerSteps.class);
 
-	@Given("^I have Thomas-Bayer customers url \"([^\"]*)\"$")
-	public void iHaveThomasBayerCustomersUrl(String url) throws Throwable {
-		URL = url;
+	@Given("^I have Thomas-Bayer customers baseurl and uripath \"([^\"]*)\" , \"([^\"]*)\"$")
+	public void iHaveThomasBayerCustomersBaseurlAndUripath(String url, String uripath) throws Throwable {
+		URIPath=uripath;
 	}
 
 	@When("^I send a GET request to the service with above url$")
 	public void iSendAGETRequestToTheServiceWithAboveUrl() throws Throwable {
-		designer.http().client(thomasBayerCustomers).send().get();
+		designer
+		.http()
+		.client(thomasBayerCustomers)
+		.send()
+		.get(URIPath);
 	}
 
 	@Then("^I can retrieve list of all Thomas-Bayer customers$")
 	public void iCanRetrieveListOfAllThomasBayerCustomers() throws Throwable {
-		designer.http().client(thomasBayerCustomers).receive().response(HttpStatus.OK).contentType("application/xml")
-				.payload(new ClassPathResource("responses/response1.xml"));
+		designer
+		.http()
+		.client(thomasBayerCustomers)
+		.receive()
+		.response(HttpStatus.OK)
+		.contentType("application/xml")
+		.validateScript("assert root.children().size() > 4");
 	}
 
 	@When("^I request details about the customer with above id$")
 	public void iRequestDetailsAboutTheCustomerWithAboveId() throws Throwable {
-		designer.http().client(thomasBayerCustomers).send().get("/" + customerId);
+		designer
+		.http()
+		.client(thomasBayerCustomers)
+		.send()
+		.get("/" + customerId);
 	}
 
 	@Then("^I can get customers \"([^\"]*)\"\"([^\"]*)\"\"([^\"]*)\"\"([^\"]*)\"\"([^\"]*)\"$")
@@ -59,8 +71,13 @@ public class CustomerSteps {
 		designer.createVariable("street", street);
 		designer.createVariable("city", city);
 
-		designer.http().client(thomasBayerCustomers).receive().response(HttpStatus.OK).contentType("application/xml")
-				.payload(new ClassPathResource("responses/response2.xml"));
+		designer
+		.http()
+		.client(thomasBayerCustomers)
+		.receive()
+		.response(HttpStatus.OK)
+		.contentType("application/xml")
+		.payload(new ClassPathResource("responses/response2.xml"));
 
 	}
 
@@ -76,7 +93,10 @@ public class CustomerSteps {
 
 	@When("^I request details about the customer with above id in XML format$")
 	public void iRequestDetailsAboutTheCustomerWithAboveIdInXMLFormat() throws Throwable {
-		designer.http().client(thomasBayerCustomers).send().get("/" + customersId);
+		designer.
+		http().
+		client(thomasBayerCustomers).
+		send().get("/" + customersId);
 	}
 
 	@Then("^I should receive:$")

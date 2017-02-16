@@ -5,7 +5,7 @@ I want to get all details of my customers
 so that I can provide updated information about my company services to all my customers
 
 Scenario: Retrieve list of all Thomas-Bayer Customers 
-	Given I have Thomas-Bayer customers url "http://www.thomas-bayer.com/sqlrest/CUSTOMER" 
+	Given I have Thomas-Bayer customers baseurl and uripath "http://www.thomas-bayer.com/sqlrest" , "/CUSTOMER/"
 	When I send a GET request to the service with above url 
 	Then I can retrieve list of all Thomas-Bayer customers 
 	
