@@ -23,7 +23,7 @@ node ('master') {
 
 		stage('Deploy'){
 			step{
-				sh 'echo "write your deploy code here";
+				sh 'echo "write your deploy code here"
 			}
 		}
 	}
