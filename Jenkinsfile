@@ -1,21 +1,18 @@
-pipeline {
-    agent any
+node ('master') {
 
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
+   stage "build"
+        // build without tests
+        checkout scm
+        sh 'mvn clean'
+   
+   stage "acceptance tests"
+   sh (script: 'mvn test', returnStatus: true)
+   
+   if (currentBuild.result == null) {
+	    stage "publish results"
+            sh (script: 'mvn cukedoctor:execute', returnStatus: true)
+            step([$class: 'ResultArchiver',
+                 testResults: '**/target/docs/Thomas-Bayer.pdf'])
     }
 }
+
