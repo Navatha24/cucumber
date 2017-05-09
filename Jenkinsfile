@@ -1,4 +1,4 @@
-node ('thomas-bayer') {
+node ('master') {
 
    stage 'checkout'
    
