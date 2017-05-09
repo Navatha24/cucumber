@@ -3,14 +3,14 @@ node ('master') {
    stage "build"
         // build without tests
         checkout scm
-        sh 'mvn clean'
+        sh './mvnw clean install'
    
    stage "acceptance tests"
-   sh (script: 'mvn test', returnStatus: true)
+   sh (script: './mvnw test', returnStatus: true)
    
    if (currentBuild.result == null) {
 	    stage "publish results"
-            sh (script: 'mvn cukedoctor:execute', returnStatus: true)
+            sh (script: './mvnw cukedoctor:execute', returnStatus: true)
             step([$class: 'ResultArchiver',
                  testResults: '**/target/docs/Thomas-Bayer.pdf'])
     }
