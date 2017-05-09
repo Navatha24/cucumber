@@ -1,33 +1,31 @@
-node ('master') {
+node ('master') { 
+	
+	tools{
+		def mvnHome = tool 'mvn'
+	}
+	stages{
+		
+		stage('Build'){
+			checkout scm
+			steps{
+				 sh "${mvnHome}/bin/mvn versions:set -DnewVersion=${env.BUILD_NUMBER}"
+				 sh "${mvnHome}/bin/mvn clean"
+			}
+		}
 
-   stage 'checkout'
-   
-   def mvnHome = tool 'mvn'
+		stage('Test'){
+			checkout scm
+			steps{
+				sh "${mvnHome}/bin/mvn test"
+				sh "${mvnHome}/bin/mvn cukedoctor:execute"
+			}
+		}
 
-   stage 'build'
-   
-   sh "${mvnHome}/bin/mvn versions:set -DnewVersion=${env.BUILD_NUMBER}"
-   sh "${mvnHome}/bin/mvn package"
-
-   stage 'test'
-   parallel 'test': {
-     sh "${mvnHome}/bin/mvn test; sleep 2;"
-   }, 'verify': {
-     sh "${mvnHome}/bin/mvn verify; sleep 3"
-   }
-
-   stage 'archive'
-   archive 'target/Thom.pdf'
+		stage('Deploy'){
+			step{
+				sh 'echo "write your deploy code here";
+			}
+		}
+	}
+	
 }
-
-
-node {
-   stage 'deploy Canary'
-   sh 'echo "write your deploy code here"; sleep 5;'
-
-   stage 'deploy Production'
-   input 'Proceed?'
-   sh 'echo "write your deploy code here"; sleep 6;'
-   archive 'target/*.jar'
-}
-
