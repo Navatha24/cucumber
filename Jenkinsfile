@@ -1,13 +1,11 @@
 node ('master') { 
 	
-	tools{
-		def mvnHome = tool 'mvn'
-	}
 	stages{
 		
 		stage('Build'){
 			checkout scm
 			steps{
+				 def mvnHome = tool 'mvn'
 				 sh "${mvnHome}/bin/mvn versions:set -DnewVersion=${env.BUILD_NUMBER}"
 				 sh "${mvnHome}/bin/mvn clean"
 			}
