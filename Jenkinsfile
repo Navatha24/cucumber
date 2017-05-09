@@ -1,7 +1,5 @@
 node ('master') { 
 	
-	stages{
-		
 		stage('Build'){
 			checkout scm
 			steps{
@@ -24,6 +22,5 @@ node ('master') {
 				sh 'echo write your deploy code here'
 			}
 		}
-	}
 	
 }
