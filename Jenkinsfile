@@ -2,7 +2,7 @@ node ('master') {
 	
 		stage('Build'){
 			checkout scm
-			steps{
+			step{
 				 def mvnHome = tool 'mvn'
 				 sh "${mvnHome}/bin/mvn versions:set -DnewVersion=${env.BUILD_NUMBER}"
 				 sh "${mvnHome}/bin/mvn clean"
@@ -11,7 +11,7 @@ node ('master') {
 
 		stage('Test'){
 			checkout scm
-			steps{
+			step{
 				sh "${mvnHome}/bin/mvn test"
 				sh "${mvnHome}/bin/mvn cukedoctor:execute"
 			}
