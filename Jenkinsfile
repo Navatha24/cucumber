@@ -1,4 +1,4 @@
-node ('slave') { 
+node ('master') { 
 		
 		def mvnHome = tool 'mvn'
 				
