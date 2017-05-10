@@ -5,7 +5,7 @@ node ('master') {
 		stage('Build'){
 			checkout scm
 			sh "${mvnHome}/bin/mvn versions:set -DnewVersion=${env.BUILD_NUMBER}"
-			sh "${mvnHome}/bin/mvn clean package"
+			sh "${mvnHome}/bin/mvn install"
 			
 		}
 
