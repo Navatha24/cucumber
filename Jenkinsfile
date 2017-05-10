@@ -6,6 +6,8 @@ node ('master') {
 			checkout scm
 			sh "${mvnHome}/bin/mvn versions:set -DnewVersion=${env.BUILD_NUMBER}"
 			sh "${mvnHome}/bin/mvn install"
+			println 'Running Sonar analysis';
+    		sh "mvn sonar:sonar'"
 			
 		}
 
