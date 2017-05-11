@@ -13,14 +13,15 @@ node ('master') {
      			currentBuild.result = "FAILED"
 	     		throw e
    		    } finally {
-     			
+     			step($class: 'CucumberTestResultArchiver', testResults: '**/target/docs/**.json', ignoreBadSteps: true)
      			notifyBuild(currentBuild.result)
+     			
    		    }
    
 		 }
 
-		stage('Acceptance Test'){
-				sh "${mvnHome}/bin/mvn cukedoctor:execute"
+		stage('Acceptance Test Report'){
+				 
 		}
 
 		stage('Archive'){
