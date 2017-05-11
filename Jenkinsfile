@@ -2,22 +2,6 @@ node ('master') {
 
 		def mvnHome = tool 'mvn'
 		
-		def notifyBuild(String buildStatus) {
-  				buildStatus =  buildStatus ?: 'SUCCESSFUL'
-  				def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-   				def summary = "${subject} (${env.BUILD_URL})"
-   				
-   				if (buildStatus == 'STARTED') {
-     					color = 'YELLOW'
-     			} else if (buildStatus == 'SUCCESSFUL') {
-     					color = 'GREEN'
-  				} else {
-     					color = 'RED'
-   				}
-
-  				hipchatSend (color: color, notify: true, message: summary)
-  		}
-				
 		stage('Build'){
 			checkout scm	
 			
@@ -44,3 +28,19 @@ node ('master') {
 		}
 	
 }
+
+def notifyBuild(String buildStatus) {
+  				buildStatus =  buildStatus ?: 'SUCCESSFUL'
+  				def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+   				def summary = "${subject} (${env.BUILD_URL})"
+   				
+   				if (buildStatus == 'STARTED') {
+     					color = 'YELLOW'
+     			} else if (buildStatus == 'SUCCESSFUL') {
+     					color = 'GREEN'
+  				} else {
+     					color = 'RED'
+   				}
+
+  				hipchatSend (color: color, notify: true, message: summary)
+   }
