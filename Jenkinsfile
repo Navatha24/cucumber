@@ -1,15 +1,39 @@
 node ('master') { 
-		
+
 		def mvnHome = tool 'mvn'
+		
+		def notifyBuild(String buildStatus) {
+  				buildStatus =  buildStatus ?: 'SUCCESSFUL'
+  				def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+   				def summary = "${subject} (${env.BUILD_URL})"
+   				
+   				if (buildStatus == 'STARTED') {
+     					color = 'YELLOW'
+     			} else if (buildStatus == 'SUCCESSFUL') {
+     					color = 'GREEN'
+  				} else {
+     					color = 'RED'
+   				}
+
+  				hipchatSend (color: color, notify: true, message: summary)
+  		}
 				
 		stage('Build'){
-			checkout scm
-			sh "${mvnHome}/bin/mvn versions:set -DnewVersion=${env.BUILD_NUMBER}"
-			sh "${mvnHome}/bin/mvn install"
-			println 'Running Sonar analysis';
-    		sh "mvn sonar:sonar'"
+			checkout scm	
 			
-		}
+			try {
+     			notifyBuild('STARTED')
+     			sh "${mvnHome}/bin/mvn install"
+     			
+ 		   	} catch (e) {
+     			currentBuild.result = "FAILED"
+	     		throw e
+   		    } finally {
+     			
+     			notifyBuild(currentBuild.result)
+   		    }
+   
+		 }
 
 		stage('Acceptance Test'){
 				sh "${mvnHome}/bin/mvn cukedoctor:execute"
