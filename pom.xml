@@ -60,6 +60,21 @@
 	</build>
 
 	<dependencies>
+		
+		<!-- Cucumber Spring library to be loaded in classpath before before citrus -->
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-spring</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- Citrus -->
 		<dependency>
@@ -90,20 +105,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Cucumber -->
-		<dependency>
-			<groupId>info.cukes</groupId>
-			<artifactId>cucumber-junit</artifactId>
-			<version>${cucumber.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>info.cukes</groupId>
-			<artifactId>cucumber-spring</artifactId>
-			<version>${cucumber.version}</version>
-			<scope>test</scope>
-		</dependency>
 
 		<!-- Logging -->
 		<dependency>

@@ -7,25 +7,19 @@ node ('master') {
 			
 			try {
      			notifyBuild('STARTED')
-     			sh "${mvnHome}/bin/mvn install"
+     			//sh "${mvnHome}/bin/mvn install"
      			
  		   	} catch (e) {
      			currentBuild.result = "FAILED"
 	     		throw e
    		    } finally {
-     			step($class: 'CucumberTestResultArchiver', testResults: '**/target/docs/**.json', ignoreBadSteps: true)
      			notifyBuild(currentBuild.result)
-     			
    		    }
    
 		 }
 
 		stage('Acceptance Test Report'){
 				 
-		}
-
-		stage('Archive'){
-				sh 'echo write your deploy code here'
 		}
 	
 }
@@ -44,4 +38,4 @@ def notifyBuild(String buildStatus) {
    				}
 
   				hipchatSend (color: color, notify: true, message: summary)
-   }
+ }
