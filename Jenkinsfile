@@ -15,7 +15,7 @@ node ('master') {
 	     		throw e
    		    } finally {
      			notifyBuild(currentBuild.result)
-     			runSonarAnalysis()
+     			//runSonarAnalysis()
      			archiveTestResults()
    		    }
    
