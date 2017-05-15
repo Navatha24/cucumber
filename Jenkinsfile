@@ -28,7 +28,7 @@ node ('master') {
 }
 
 void archiveTestResults() {
-    step([$class: 'JUnitResultArchiver', testResults: '**/target/**/TEST*.xml', allowEmptyResults: true])
+    step([$class: 'JUnitResultArchiver', testResults: '**/target/Cucumber/index.html', allowEmptyResults: true])
 }
 
 void runSonarAnalysis() {
