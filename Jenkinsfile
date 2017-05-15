@@ -2,18 +2,21 @@ node ('master') {
 
 		def mvnHome = tool 'mvn'
 		
-		stage('Build'){
+		stage('Integration Tests'){
 			checkout scm	
 			
 			try {
      			notifyBuild('STARTED')
      			//sh "${mvnHome}/bin/mvn install"
      			
+     			
  		   	} catch (e) {
      			currentBuild.result = "FAILED"
 	     		throw e
    		    } finally {
      			notifyBuild(currentBuild.result)
+     			runSonarAnalysis()
+     			archiveTestResults()
    		    }
    
 		 }
@@ -22,6 +25,16 @@ node ('master') {
 				 
 		}
 	
+}
+
+void archiveTestResults() {
+    step([$class: 'JUnitResultArchiver', testResults: '**/target/**/TEST*.xml', allowEmptyResults: true])
+}
+
+void runSonarAnalysis() {
+    //println 'Sonar analysis temporarily disabled';
+    println 'Running Sonar analysis';
+    sh "mvn -B -V -U -e org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar -Dsonar.host.url='${Constants.SONAR_URL}'"
 }
 
 def notifyBuild(String buildStatus) {
