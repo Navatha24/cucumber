@@ -7,7 +7,7 @@ node ('master') {
 			
 			try {
      			notifyBuild('STARTED')
-     			//sh "${mvnHome}/bin/mvn install"
+     			sh "${mvnHome}/bin/mvn install"
      			
      			
  		   	} catch (e) {
